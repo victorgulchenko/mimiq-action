@@ -1,0 +1,57 @@
+name: Mimiq page test
+description: Test each preview deploy on simulated people and get one PR comment on who would stay, skim or leave, and why.
+author: Victor Gulchenko
+branding:
+  icon: users
+  color: gray-dark
+
+inputs:
+  api-key:
+    description: Your Mimiq API key (starts with mq_sk_). Keep it in a secret. Create it in Mimiq under Settings, "Use Mimiq from your coding agent".
+    required: true
+  url:
+    description: The page to test. Defaults to the URL of a successful deployment_status event (environment_url, then target_url), else the newest successful deployment of the commit.
+    required: false
+    default: ''
+  audience:
+    description: Who the visitors are, in plain words, for example "founders choosing an analytics tool". Leave empty and Mimiq picks the likely audience from the page. Up to 500 characters.
+    required: false
+    default: ''
+  goal:
+    description: What the page should get people to do, for example "join the waitlist". Optional, up to 500 characters.
+    required: false
+    default: ''
+  people:
+    description: How many simulated people visit the page. Each one uses one credit. Default 10, hard maximum 25.
+    required: false
+    default: '10'
+  fail-below:
+    description: Fail the check when fewer than this percentage of simulated people would stay, for example 50. Off when empty.
+    required: false
+    default: ''
+  comment:
+    description: Post or update one pull request comment with the result.
+    required: false
+    default: 'true'
+  timeout-minutes:
+    description: How long to wait for the result before commenting that the test is still running (1 to 60).
+    required: false
+    default: '8'
+  github-token:
+    description: Token used to find the pull request, read deployments and write the comment.
+    required: false
+    default: ${{ github.token }}
+
+outputs:
+  report-url:
+    description: Link to the full report in Mimiq.
+  stayed:
+    description: How many simulated people would stay (empty if the test did not finish in time).
+  people:
+    description: How many simulated people reacted (empty if the test did not finish in time).
+  verdict:
+    description: Holds attention, Mixed, Loses most or Losing them; or running, audience-mismatch, skipped or error.
+
+runs:
+  using: node24
+  main: src/index.js

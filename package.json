@@ -1,0 +1,16 @@
+{
+  "name": "mimiq-action",
+  "version": "1.0.0",
+  "private": true,
+  "description": "GitHub Action: test each preview deploy on simulated people with Mimiq and post one pull request comment.",
+  "type": "module",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "node --test test/*.test.js"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "author": "Victor Gulchenko",
+  "license": "MIT"
+}
